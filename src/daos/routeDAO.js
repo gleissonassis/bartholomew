@@ -64,9 +64,9 @@ module.exports = function() {
 
     update: function(entity) {
       return new Promise(function(resolve, reject) {
-        logger.log('info', 'Update a route');
+        logger.log('info', 'Updating a route');
 
-        model.findByIdAndUpdate(entity._id, $.flatten(entity), {'new': true}, projectionCommonFields)
+        model.findByIdAndUpdate(entity._id, $.flatten(entity), {'new': true, fields: projectionCommonFields})
         .then(function(item) {
           logger.log('info', 'The route has been updated succesfully');
           logger.debug(JSON.stringify(item.toObject()));
@@ -107,7 +107,7 @@ module.exports = function() {
       return new Promise(function(resolve, reject) {
         logger.log('info', 'Disabling a route');
 
-        model.findByIdAndUpdate(id, {_id:id, isEnabled: false}, {'new': true}, projectionCommonFields)
+        model.findByIdAndUpdate(id, {_id:id, isEnabled: false}, {'new': true, fields: projectionCommonFields})
         .then(function(item) {
           logger.log('info', 'The route has been disabled succesfully');
           resolve(item.toObject());

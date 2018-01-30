@@ -106,7 +106,7 @@ module.exports = function() {
       return new Promise(function(resolve, reject) {
         logger.log('info', 'Disabling a mail template');
 
-        model.findByIdAndUpdate(id, {_id:id, isEnabled: false}, {'new': true}, projectionCommonFields)
+        model.findByIdAndUpdate(id, {_id:id, isEnabled: false}, {'new': true, fields: projectionCommonFields})
         .then(function(item) {
           logger.log('info', 'The mail template has been disabled succesfully');
           resolve(item.toObject());

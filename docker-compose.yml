@@ -18,7 +18,7 @@ services:
     working_dir: /app
     command: bash ./start.sh
     ports:
-      - 3000:5000
+      - 5002:5000
     networks:
       - web
       - db

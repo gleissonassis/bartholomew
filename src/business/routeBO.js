@@ -68,8 +68,9 @@ module.exports = function(dependencies) {
             }
           })
           .then(function(r) {
-            resolve(modelParser.clear(r));
+            return modelParser.clear(r);
           })
+          .then(resolve)
           .catch(reject);
       });
     },
