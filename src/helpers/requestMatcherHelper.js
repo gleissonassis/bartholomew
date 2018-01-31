@@ -19,13 +19,14 @@ module.exports = function() {
     },
 
     tryMatchQueryString: function(req, route) {
-      if (route.request.querystring) {
+      if (!route.request.querystring) {
         return true;
       }
 
       for (k in route.request.querystring) {
         if (req.query[k] !== route.request.querystring[k]) {
           logger.info('req.query[' + k + '] !== route.request.querystring[' + k + ']');
+          logger.info(req.query[k], route.request.querystring[k]);
           return false;
         }
       }
@@ -34,13 +35,15 @@ module.exports = function() {
     },
 
     tryMatchHeaders: function(req, route) {
-      if (route.request.headers) {
+      if (!route.request.headers) {
         return true;
       }
 
       for (k in route.request.headers) {
-        if (req.headers[k] !== route.request.headers[k]) {
-          logger.info('req.headers[' + k + '] !== route.request.headers[' + k + ']');
+        var kl = k.toLowerCase();
+        if (req.headers[kl] !== route.request.headers[kl]) {
+          logger.info('req.headers[' + kl + '] !== route.request.headers[' + kl + ']');
+          logger.info(req.headers[kl], route.request.headers[kl]);
           return false;
         }
       }
@@ -49,13 +52,14 @@ module.exports = function() {
     },
 
     tryMatchBody: function(req, route) {
-      if (route.request.body) {
+      if (!route.request.body) {
         return true;
       }
 
       for (k in route.request.body) {
         if (req.body[k] !== route.request.body[k]) {
           logger.info('req.body[' + k + '] !== route.request.body[' + k + ']');
+          logger.info(req.headers[k], route.request.headers[k]);
           return false;
         }
       }
