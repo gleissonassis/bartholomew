@@ -59,7 +59,7 @@ module.exports = function() {
       for (k in route.request.body) {
         if (req.body[k] !== route.request.body[k]) {
           logger.info('req.body[' + k + '] !== route.request.body[' + k + ']');
-          logger.info(req.headers[k], route.request.headers[k]);
+          logger.info(req.body[k], route.request.body[k]);
           return false;
         }
       }
