@@ -61,6 +61,6 @@ var defaultConfig = merge(commonSettings, privateSettings);
 // now merging default config with specifc enviroment config
 defaultConfig = merge(defaultConfig, envinromentConfig);
 
-logger.debug('Payer is running using this configurations ', defaultConfig);
+logger.debug('Bartholomew is running using this configurations ', defaultConfig);
 
 module.exports = defaultConfig;
