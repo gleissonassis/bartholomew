@@ -12,7 +12,7 @@ module.exports = function(dependencies) {
         chain
           .then(function() {
             // removing the initial path /mock
-            var path = request.path.replace('/mock/', '/');
+            var path = request.path.replace('/v1/mock/', '/');
             var method = request.method;
 
             return routeBO.getAllByPathAndMethod(path, method);
