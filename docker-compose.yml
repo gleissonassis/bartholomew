@@ -5,6 +5,7 @@ networks:
 services:
   db:
     image: mongo:3.4.10
+    restart: always
     volumes:
       - ./data:/data/db
     networks:
