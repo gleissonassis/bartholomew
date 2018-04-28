@@ -3,6 +3,7 @@ FROM alpine
 RUN apk update && \
     apk add nodejs && \
     apk add nodejs-npm && \
+    apk add --update bash && rm -rf /var/cache/apk/* && \
     mkdir /app && \
 
 WORKDIR /app
