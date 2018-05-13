@@ -1,18 +1,6 @@
-FROM alpine
-
-RUN apk update && \
-    apk add nodejs && \
-    apk add nodejs-npm && \
-    apk add --update bash && rm -rf /var/cache/apk/* && \
-    mkdir /app && \
-
-WORKDIR /app
-
+FROM node:carbon
+WORKDIR /usr/src/app
 COPY . .
-
-RUN npm i && \
-    chmod +x start.sh
-
+RUN npm install
 EXPOSE 5000
-
-CMD ["/app/start.sh"]
+CMD [ "npm", "start", "--production" ]

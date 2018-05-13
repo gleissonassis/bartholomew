@@ -7,17 +7,15 @@ services:
     image: mongo:3.4.10
     restart: always
     volumes:
-      - ./data:/data/db
+      - ./data:/usr/src/app/data/db
     networks:
       - db
-  services:
-    image: node:9.2.0
+  backend:
+    image: node:carbon
     restart: always
     volumes:
-      - .:/app
+      - ./src:/usr/src/app/src
     build: .
-    working_dir: /app
-    command: bash ./start.sh
     ports:
       - 5002:5000
     networks:

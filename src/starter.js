@@ -1,29 +1,29 @@
-var UserBO                = require('./business/userBO');
-var DAOFactory            = require('./daos/daoFactory');
-var ModelParser           = require('./models/modelParser');
-var JWTHelper             = require('./helpers/jwtHelper');
-var UserHelper            = require('./helpers/userHelper');
-var md5                   = require('./helpers/md5');
-var Promise               = require('promise');
+const UserBO                = require('./business/userBO');
+const DAOFactory            = require('./daos/daoFactory');
+const ModelParser           = require('./models/modelParser');
+const JWTHelper             = require('./helpers/jwtHelper');
+const UserHelper            = require('./helpers/userHelper');
+const md5                   = require('./helpers/md5');
+module.exports = class Starter {
 
-module.exports = function() {
-  var modelParser = new ModelParser();
+  constructor () {
+    this.modelParser = new ModelParser();
+    this.userBO = new UserBO({
+      userDAO: DAOFactory.getDAO('user'),
+      modelParser: this.modelParser,
+      jwtHelper: new JWTHelper(),
+      userHelper: new UserHelper()
+    });
+  }
 
-  var userBO = new UserBO({
-    userDAO: DAOFactory.getDAO('user'),
-    modelParser: modelParser,
-    jwtHelper: new JWTHelper(),
-    userHelper: new UserHelper()
-  });
+  async createAdminUser() {
 
-  return {
-    createAdminUser: function() {
-      return new new Promise(function(resolve, reject) {
-        // in TEST environment there is no need to create a default admin user
-        if (process.env.NODE_ENV && process.env.NODE_ENV === 'test') {
-          resolve();
-        } else {
-          userBO.createUserWithoutValidations({
+      // in TEST environment there is no need to create a default admin user
+      if (process.env.NODE_ENV && process.env.NODE_ENV === 'test') {
+        return
+      } else {
+        try {
+          await this.userBO.createUserWithoutValidations({
             name: 'Administrator',
             email: 'admin@barthmockserver.com',
             password: '123456',
@@ -32,27 +32,20 @@ module.exports = function() {
               key: md5('')
             },
             internalKey: md5('.')
-          })
-          .then(resolve)
-          .catch(function(error) {
-            if (error.status === 409) {
-              resolve();
-            } else {
-              reject(error);
-            }
           });
-        }
-      });
-    },
+        } catch(error) {
+          if (error.status === 409) {
+            return
+          } else {
+            console.log(error);
+          }
+        };
+      }
 
-    configureApplication: function() {
-      var self = this;
-      var chain = Promise.resolve();
+  }
 
-      return chain
-        .then(function() {
-          return self.createAdminUser();
-        });
-    }
-  };
+  configureApplication() {
+     this.createAdminUser();
+  }
+
 };
